@@ -27,3 +27,5 @@ if (process.env.HEROKU || process.env.NODE_ENV !== 'production') {
     console.log('JSON Server is running on port', port);
   });
 }
+
+module.exports = server;
