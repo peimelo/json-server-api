@@ -1,12 +1,12 @@
 const jsonServer = require('json-server');
-const server = jsonServer.create();
+const app = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 3001;
 
-server.use(middlewares);
+app.use(middlewares);
 
-server.use((request, response, next) => {
+app.use((request, response, next) => {
   const authorizationHeader = request.headers.authorization;
 
   if (authorizationHeader) {
@@ -16,16 +16,16 @@ server.use((request, response, next) => {
   }
 });
 
-server.use(jsonServer.rewriter({
+app.use(jsonServer.rewriter({
   '/api/*': '/$1'
 }))
 
-server.use(router);
+app.use(router);
 
 if (process.env.HEROKU || process.env.NODE_ENV !== 'production') {
-  server.listen(port, () => {
+  app.listen(port, () => {
     console.log('JSON Server is running on port', port);
   });
 }
 
-module.exports = server;
+module.exports = app;
